@@ -1,4 +1,5 @@
-const pdfParse = require("pdf-parse");
+// @ts-ignore - TS complains about no default export, but this is required for Vercel's bundler
+import pdfParse from "pdf-parse";
 import { Document } from "@langchain/core/documents";
 
 /**

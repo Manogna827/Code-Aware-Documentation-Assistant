@@ -3,6 +3,8 @@ import { extractTextFromFile } from "@/lib/rag/1-ingestion";
 import { chunkDocuments } from "@/lib/rag/2-chunking";
 import { storeDocumentsInVectorDB } from "@/lib/rag/4-vectorStore";
 
+export const maxDuration = 60; // Allows Vercel to run up to 60s (fixes timeout)
+
 export async function POST(request: Request) {
   try {
     const formData = await request.formData();
