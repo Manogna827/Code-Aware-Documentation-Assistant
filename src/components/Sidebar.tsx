@@ -51,7 +51,7 @@ export default function Sidebar() {
           Knowledge Base
         </h2>
         <p className="text-sm text-slate-400">
-          Upload PDF, TXT, or MD files to add them to MongoDB Atlas.
+          Upload TXT, MD, or CSV files to add them to MongoDB Atlas.
         </p>
       </div>
 
@@ -79,7 +79,7 @@ export default function Sidebar() {
                   <p className="mb-1 text-sm text-slate-300">
                     <span className="font-semibold">Click to upload</span> or drag and drop
                   </p>
-                  <p className="text-xs text-slate-500">PDF, TXT, MD</p>
+                  <p className="text-xs text-slate-500">TXT, MD, CSV</p>
                 </>
               )}
             </div>
@@ -87,7 +87,7 @@ export default function Sidebar() {
               id="file-upload" 
               type="file" 
               className="hidden" 
-              accept=".pdf,.txt,.md,.csv" 
+              accept=".txt,.md,.csv" 
               onChange={handleFileUpload}
               disabled={isUploading}
             />

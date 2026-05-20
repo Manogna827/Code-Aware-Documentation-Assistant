@@ -14,7 +14,7 @@ This project provides a clean, easily understandable pipeline mapping to the sta
 
 Check out the `src/lib/rag/` folder to see exactly how RAG works under the hood:
 
-1. **`1-ingestion.ts`**: Uses LangChain's `PDFLoader` & `TextLoader`.
+1. **`1-ingestion.ts`**: Extracts and structures raw text from TXT, MD, and CSV files.
 2. **`2-chunking.ts`**: Uses `RecursiveCharacterTextSplitter`.
 3. **`3-embeddings.ts`**: Uses `GoogleGenerativeAIEmbeddings`.
 4. **`4-vectorStore.ts`**: Connects to `MongoDBAtlasVectorSearch`.

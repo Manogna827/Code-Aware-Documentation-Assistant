@@ -2,11 +2,26 @@ import { Document } from "@langchain/core/documents";
 
 /**
  * STEP 1: DOCUMENT INGESTION (LANGCHAIN)
- *
- * Supports:
- * - TXT
- * - MD
- * - CSV
+ * 
+ * What this block does:
+ * Takes uploaded files such as TXT, MD, and CSV files, reads their contents,
+ * and converts them into LangChain Document objects.
+ * 
+ * Why it is important in RAG:
+ * LangChain uses Document objects as the standard format for passing data
+ * through the RAG pipeline. By converting raw files into structured Documents,
+ * we can easily perform chunking, embedding generation, and vector storage.
+ * 
+ * This step is responsible for:
+ * - Reading uploaded files
+ * - Extracting text content
+ * - Adding useful metadata (like file name)
+ * - Preparing data for chunking
+ * 
+ * Input -> Output flow:
+ * Uploaded File (TXT / MD / CSV)
+ *            ↓
+ * Array of LangChain Documents
  */
 
 export async function extractTextFromFile(
