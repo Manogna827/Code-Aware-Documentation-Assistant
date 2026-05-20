@@ -18,26 +18,39 @@ import { Document } from "@langchain/core/documents";
  * File (Blob) -> Array of LangChain Documents (Metadata + pageContent)
  */
 export async function extractTextFromFile(file: File): Promise<Document[]> {
-  const arrayBuffer = await file.arrayBuffer();
-  const blob = new Blob([arrayBuffer], { type: file.type });
-  
-  if (file.type === "application/pdf" || file.name.endsWith(".pdf")) {
-    const pdfData = await pdfParse(Buffer.from(arrayBuffer));
-    return [new Document({ pageContent: pdfData.text, metadata: { source: file.name } })];
-  }
+  try {
+    const arrayBuffer = await file.arrayBuffer();
+    
+    // Safely convert ArrayBuffer to Node.js Buffer for Vercel compatibility
+    const buffer = Buffer.from(arrayBuffer);
+    
+    if (file.type === "application/pdf" || file.name.endsWith(".pdf")) {
+      const pdfData = await pdfParse(buffer);
+      if (!pdfData || !pdfData.text) {
+        throw new Error("Failed to extract text from the PDF.");
+      }
+      return [new Document({ pageContent: pdfData.text, metadata: { source: file.name } })];
+    }
 
-  if (
-    file.type === "text/plain" ||
-    file.type === "text/markdown" ||
-    file.name.endsWith(".txt") ||
-    file.name.endsWith(".md") ||
-    file.name.endsWith(".csv")
-  ) {
-    const text = Buffer.from(arrayBuffer).toString("utf-8");
-    return [new Document({ pageContent: text, metadata: { source: file.name } })];
-  }
+    if (
+      file.type === "text/plain" ||
+      file.type === "text/markdown" ||
+      file.name.endsWith(".txt") ||
+      file.name.endsWith(".md") ||
+      file.name.endsWith(".csv")
+    ) {
+      const text = buffer.toString("utf-8");
+      if (!text || !text.trim()) {
+        throw new Error("The uploaded text file is empty.");
+      }
+      return [new Document({ pageContent: text, metadata: { source: file.name } })];
+    }
 
-  throw new Error(
-    "Unsupported file type. Please upload a PDF, TXT, or MD file."
-  );
+    throw new Error(
+      `Unsupported file type: ${file.type || file.name}. Please upload a PDF, TXT, or MD file.`
+    );
+  } catch (error: any) {
+    console.error("Error in extractTextFromFile:", error);
+    throw new Error(`Ingestion failed: ${error.message}`);
+  }
 }
